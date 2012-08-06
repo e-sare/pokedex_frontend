@@ -12,6 +12,25 @@ class PokedexController extends Zend_Controller_Action
 
     public function indexAction()
     {
+
+        // action body
+    }
+
+    public function browseAction()
+    {
+
+        // action body
+    }
+
+    public function comparisonAction()
+    {
+
+        // action body
+    }
+
+    public function mapsAction()
+    {
+
         // action body
     }
 

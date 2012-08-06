@@ -22,7 +22,9 @@
           <layoutScriptFile layoutName="layout"/>
         </layoutScriptsDirectory>
       </layoutsDirectory>
-      <modelsDirectory/>
+      <modelsDirectory>
+        <modelFile modelName="Pokemon"/>
+      </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
         <viewScriptsDirectory>

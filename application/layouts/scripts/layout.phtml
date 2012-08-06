@@ -4,22 +4,51 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Zend Framework Quickstart Application</title>
-  <?php echo $this->headLink()->appendStylesheet('/css/global.css') ?>
+  <?php echo $this->headLink()->appendStylesheet('/css/bootstrap.css')->appendStylesheet('/css/pokedex.css')?>
+  <?php echo $this->headScript()->appendFile('/js/bootstrap.js')->appendFile('https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js') ?>
 </head>
 <body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'index')); ?>">IGN Pokedex</a>
+                <ul class="nav">
+                    <li><a href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'browse')); ?>">Browse</a></li>
+                    <li><a href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'comparison')); ?>">Comparison</a></li>
+                    <li><a href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'maps')); ?>">Maps</a></li>
+                </ul>
+                <form class="navbar-search pull-right" action>
+                    <input type="text" class="search-query span2" placeholder="Search by name or ID">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container container-content-main">
+        <div class="view-content">
+            <?php echo $this->layout()->content ?>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-content">
+                <p class="credit">By Team Super Effective 2012</p>
+        </div>
+    </div>
+
+<!--
 <div id="header" style="background-color: #EEEEEE; height: 30px;">
     <div id="header-logo" style="float: left">
         <b>ZF Quickstart Application</b>
     </div>
     <div id="header-navigation" style="float: right">
-        <a href="<?php echo $this->url(
+        <a href="<?php /*echo $this->url(
             array('controller'=>'guestbook'),
             'default',
-            true) ?>">Guestbook</a>
+            true) */?>">Guestbook</a>
     </div>
 </div>
- 
-<?php echo $this->layout()->content ?>
+-->
+
  
 </body>
 </html>
