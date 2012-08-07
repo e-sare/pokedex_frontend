@@ -15,3 +15,6 @@ $(document).ready(function(){
 })
 
 */
+$(document).ready(function(){
+    $('#moveTab a:eq(0)').click();
+})
