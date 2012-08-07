@@ -1,0 +1,66 @@
+/*
+
+pokedex.css
+by Eric Sare
+*/
+
+body {
+    /*
+    background-color: #F4F4F4;
+    */
+}
+
+.container-content-main {
+    margin-top: 80px;
+    /*
+    box-shadow: 0 0 8px #CCC;
+    background-color: #FFF;
+    -webkit-box-shadow: 0 0 8px #CCC;
+    */
+}
+
+.footer {
+    margin: 100px 0 0;
+    color: #999;
+    background-color: #333;
+    min-height: 100px;
+}
+
+.footer .footer-content .credit{
+    padding: 20px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/*
+.view-content{
+    padding: 10px;
+}
+*/
+
+.landing-header{
+    height: 50px;
+    text-align: center;
+}
+
+.pkm-number-nav{
+    padding: 10px;
+    background-color:#EEE;
+}
+
+.pkm-number-nav .pkm-current{
+    font-size: 18px;
+}
+
+.pkm-section-header{
+    padding-bottom: 0;
+    /*
+    margin-left: 20px;
+    margin-right: 20px;
+    */
+}
+
+div.pkm-move-list{
+    height:300px;
+    overflow: scroll;
+}
