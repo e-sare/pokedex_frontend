@@ -10,6 +10,30 @@ body {
     */
 }
 
+table.table-type-defense{
+    font-size:9px;
+}
+
+table.table-location{
+    font-size:10px;
+    width: 0;
+}
+
+table.table-location th{
+    width:40px;
+}
+
+table.table-stats {
+    width:0;
+}
+table.table-stats th, table.table-stats td{
+    width:40px;
+}
+
+table.table-stats div.progress{
+    margin-bottom: 0px;
+}
+
 .container-content-main {
     margin-top: 80px;
     /*
