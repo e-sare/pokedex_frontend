@@ -50,7 +50,14 @@ class PokedexController extends Zend_Controller_Action
         define('POKEMON_IMAGE_DIR','/img/sugimori/');
         //define(POKEMON_MOVES_API, POKEDEX_API . 'moves/');
 
-        $url = POKEMON_API . $param_name;
+        $url = POKEMON_API . $param_name . '/generation/5';
+
+
+
+
+
+        //localhost:8080/pokedex/pokemon/pikachu
+
         // $moves_api = "localhost:8080/pokemon/moves";
         //$request = http_get($moves_api, array('timeout'=>1), $info);
 
