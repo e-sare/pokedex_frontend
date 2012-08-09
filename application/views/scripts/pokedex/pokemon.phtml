@@ -1,14 +1,14 @@
 <div class="container">
     <ul class="nav nav-pills pkm-number-nav">
         <li class="pull-left"><a href="#">#24 Arbok</a></li>
-        <li class="span4 offset4 pkm-current"><a href="#">Pikachu</a></li>
+        <li class="span4 offset4 pkm-current"><a href="#"><?php echo ucwords($this->pkm['metadata']['name'])?></a></li>
         <li class="pull-right"><a href="#">#26 Raichu</a></li>
     </ul>
 </div>
 
 <div class="container pkm-form">
     <div class="row">
-        <div class="span3 pkm-profile-pic thumbnail"><img src="http://placehold.it/260x180" alt="pkm-profile-pic"></div>
+        <div class="span3 pkm-profile-pic thumbnail"><img src='<?php echo POKEMON_IMAGE_DIR . $this->pkm["metadata"]["nationalId"] . '.png';?>' alt="pkm-profile-pic"></div>
         <div class="span8">
             <p>Editorial Description:
             Lorem ipsum dolor sit amet, maiores ornare ac fermentum, imperdiet ut vivamus a, nam lectus at nunc. Quam euismod sem, semper ut potenti pellentesque quisque. In eget sapien sed, sit duis vestibulum ultricies, placerat morbi amet vel, nullam in in lorem vel.
@@ -23,14 +23,31 @@
             </div>
         </div>
         <div class="span8">
-            <table class="table table-striped table-bordered table-condensed">
-                <tr><td class="span2">Number</td><td></td></tr>
-                <tr><td>Type</td><td></td></tr>
-                <tr><td>Egg Group</td><td></td></tr>
-                <tr><td>Gender</td><td></td></tr>
-                <tr><td>Weakness</td><td></td></tr>
-                <tr><td>Height</td><td></td></tr>
-                <tr><td>Weight</td><td></td></tr>
+            <table class="table table-striped table-bordered table-condensed table-width-zero table-general-info">
+                <tr><th>Number</th><td><?php echo $this->pkm['metadata']['nationalId']; ?></td></tr>
+                <tr><th>Type</th> 
+                    <td> <?php foreach($this->pkm['metadata']['type'] as $key => $value){
+                        echo $value . " "; } ?>
+                    </td>
+                </tr>
+                <tr><th>Egg Group</th><td>???</td></tr>
+                <tr><th>Gender</th>
+                    <td>
+                        <?php if(is_numeric($this->pkm['metadata']['femaleGenderPercent'])): ?>
+                            <?php echo $this->pkm['metadata']['femaleGenderPercent'] . "&#37 Female"; ?>
+                        &nbsp;
+                            <?php echo (100 - $this->pkm['metadata']['femaleGenderPercent']) . "&#37 Male"; ?>
+                        <?php else: echo $this->pkm['metadata']['femaleGenderPercent']; ?>
+                        <?php endif;?>
+                    </td>
+                </tr>
+                <tr><th>Weakness</th><td>???</td></tr>
+                <tr><th>Height</th>
+                    <td><?php echo $this->pkm['metadata']['height'];?></td>
+                </tr>
+                <tr><th>Weight</th>
+                    <td><?php echo $this->pkm['metadata']['weight'];?></td>
+                </tr>
             </table>
         </div>
     </div>
@@ -40,42 +57,47 @@
 </div>
 <div class="container evolution">
     <div class="row">
-        <div class="span2 ">
+        <div class="span2 thumbnail">
             <a href="#"><img src="http://placehold.it/260x180" alt="name of pokemon"></a>
-            <br>
-            <a href="#" class="pkm-name">Pichu</a>
-            <br>
-            #172
-            <br>
-            <a href="#" class="pkm-type">Electric</a>
+            <div class="caption">
+                <a href="#" class="pkm-name">Pichu</a>
+                <br>
+                #172
+                <br>
+                <a href="#" class="pkm-type">Electric</a>
+            </div>
         </div>
         <div class="span2 arrow">
             <em>&rarr;</em>
             <br>
             <span class="pkm-evo-how">by Happiness</span>
         </div>
-        <div class="span2">
+        <div class="span2 thumbnail">
             <a href="#"><img src="http://placehold.it/260x180" alt="name of pokemon"></a>
-            <br>
-            <a href="#" class="pkm-name">Pikachu</a>
-            <br>
-            #25
-            <br>
-            <a href="#" class="pkm-type">Electric</a>
+            <div class="caption">
+                <br>
+                <a href="#" class="pkm-name">Pikachu</a>
+                <br>
+                #25
+                <br>
+                <a href="#" class="pkm-type">Electric</a>
+            </div>
         </div>
         <div class="span2">
             <em>&rarr;</em>
             <br>
             <span class="pkm-evo-how">use Thunderstone</span>
         </div>
-        <div class="span2">
+        <div class="span2 thumbnail">
             <a href="#"><img src="http://placehold.it/260x180" alt="name of pokemon"></a>
-            <br>
-            <a href="#" class="pkm-name">Raichu</a>
-            <br>
-            #26
-            <br>
-            <a href="#" class="pkm-type">Electric</a>
+            <div class="caption">
+                <br>
+                <a href="#" class="pkm-name">Raichu</a>
+                <br>
+                #26
+                <br>
+                <a href="#" class="pkm-type">Electric</a>
+            </div>
         </div>
     </div>
 </div>
@@ -89,7 +111,7 @@
             <div class="tabbable">
                 <ul class="nav nav-tabs" id="moveTab">
                     <li class=""><a href="#level-moves" data-toggle="tab">Level Moves</a></li>
-                    <li class=""><a href="#hm-tm-moves" data-toggle="tab">HM & TM</a></li>
+                    <li class=""><a href="#hm-tm-moves" data-toggle="tab">HM &amp; TM</a></li>
                     <li class=""><a href="#move-tutor-moves" data-toggle="tab">Move Tutor Moves</a></li>
                 </ul>
                 <div class="tab-content pkm-move-list span10">
@@ -99,13 +121,15 @@
                                 <tr><th>Level</th><th>Move</th><th>Type</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td class="span2">Number</td><td></td><td></td></tr>
-                                <tr><td>Type</td><td></td><td></td></tr>
-                                <tr><td>Egg Group</td><td></td><td></td></tr>
-                                <tr><td>Gender</td><td></td><td></td></tr>
-                                <tr><td>Weakness</td><td></td><td></td></tr>
-                                <tr><td>Height</td><td></td><td></td></tr>
-                                <tr><td>Weight</td><td></td><td></td></tr>
+                                <?php foreach($this->pkm['moves']['levelMoves'] as $level_move):?>
+                                    <?php list($mv_level, $mv_name, $mv_type) = $level_move; ?>
+                                <tr>
+                                    <td><?php echo $mv_level;?></td>
+                                    <td><?php echo $mv_name;?></td>
+                                    <td><?php echo $mv_type;?></td>
+                                </tr>
+                                <?php endforeach; ?>
+
                             </tbody>
 
                         </table>
@@ -117,13 +141,14 @@
                             <tr><th>Level</th><th>Move</th><th>Type</th></tr>
                             </thead>
                             <tbody>
-                            <tr><td class="span2">Number</td><td></td><td></td></tr>
-                            <tr><td>Type</td><td></td><td></td></tr>
-                            <tr><td>Egg Group</td><td></td><td></td></tr>
-                            <tr><td>Gender</td><td></td><td></td></tr>
-                            <tr><td>Weakness</td><td></td><td></td></tr>
-                            <tr><td>Height</td><td></td><td></td></tr>
-                            <tr><td>Weight</td><td></td><td></td></tr>
+                                <?php foreach($this->pkm['moves']['levelMoves'] as $level_move):?>
+                                    <?php list($mv_level, $mv_name, $mv_type) = $level_move; ?>
+                                <tr>
+                                    <td><?php echo $mv_level;?></td>
+                                    <td><?php echo $mv_name;?></td>
+                                    <td><?php echo $mv_type;?></td>
+                                </tr>
+                                <?php endforeach; ?>
                             </tbody>
                         </table>
                         <h3>Moves by TM</h3>
@@ -132,19 +157,20 @@
                             <tr><th>Level</th><th>Move</th><th>Type</th></tr>
                             </thead>
                             <tbody>
-                            <tr><td class="span2">Number</td><td></td><td></td></tr>
-                            <tr><td>Type</td><td></td><td></td></tr>
-                            <tr><td>Egg Group</td><td></td><td></td></tr>
-                            <tr><td>Gender</td><td></td><td></td></tr>
-                            <tr><td>Weakness</td><td></td><td></td></tr>
-                            <tr><td>Height</td><td></td><td></td></tr>
-                            <tr><td>Weight</td><td></td><td></td></tr>
+                                <?php foreach($this->pkm['moves']['machineMoves'] as $machine_move):?>
+                                    <?php list($mv_level, $mv_name, $mv_type) = $machine_move; ?>
+                                <tr>
+                                    <td><?php echo $mv_level;?></td>
+                                    <td><?php echo $mv_name;?></td>
+                                    <td><?php echo $mv_type;?></td>
+                                </tr>
+                                <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
                     <div class="tab-pane" id="move-tutor-moves">
                         <table class="table table-striped table-bordered table-condensed">
-                            <tr><td class="span2">Number</td><td></td><td></td></tr>
+                            <tr><td>Number</td><td></td><td></td></tr>
                             <tr><td>Type</td><td></td><td></td></tr>
                             <tr><td>Egg Group</td><td></td><td></td></tr>
                             <tr><td>Gender</td><td></td><td></td></tr>
@@ -166,7 +192,7 @@
             <div class="page-header pkm-section-header">
                 <h2>Type Defense</h2>
             </div>
-            <table class="table table-striped table-bordered table-condensed table-type-defense">
+            <table class="table table-striped table-bordered table-condensed table-type-defense table-width-zero">
                 <thead>
                     <tr>
                         <th>NOR</th>
@@ -213,7 +239,7 @@
             <div class="page-header pkm-section-header">
                 <h2>Location</h2>
             </div>
-            <table class="table table-striped table-bordered table-condensed table-location">
+            <table class="table table-striped table-bordered table-condensed table-location table-width-zero">
               <tbody>                     
                     <tr>
                         <th>
@@ -241,30 +267,80 @@
             <div class="page-header pkm-section-header">
                 <h2>Stats</h2>
             </div>
-            <table class="table table-striped table-bordered table-condensed table-stats">
+            <table class="table table-striped table-bordered table-condensed table-stats table-width-zero">
                 <tbody>
                 <tr>
                     <th>HP</th>
-                    <td class="pkm-numeric">35</td>
+                    <td class="pkm-numeric"><?php echo $this->pkm['metadata']['hp'];?></td>
                     <td class="pkm-bar-graph">
                         <div class="progress">
-                            <div class="bar" style="width: 35%;"></div>
+                            <div class="bar" style="width: <?php echo ($this->pkm['metadata']['hp'] / 2.55) . '%' ;?>"></div> 
                         </div>
                     </td>
                 </tr>
-                <tr><th></th><td></td><td></td></tr>
-                <tr><th></th><td></td><td></td></tr>
-                <tr><th></th><td></td><td></td></tr>
-                <tr><th></th><td></td><td></td></tr>
-                <tr><th></th><td></td><td></td></tr>
-                <tr><th></th><td></td><td></td></tr>
-                <tr><th></th><td></td><td></td></tr>
-                <tr><th></th><td></td><td></td></tr>
-                <tr><th></th><td></td><td></td></tr>
-                <tr><th></th><td></td><td></td></tr>
+                <tr>
+                    <th>ATTACK</th>
+                    <td class="pkm-numeric"><?php echo $this->pkm['metadata']['attack'];?></td>
+                    <td class="pkm-bar-graph">
+                        <div class="progress">
+                            <div class="bar" style="width: <?php echo ($this->pkm['metadata']['attack'] / 2.55) . '%' ;?>"></div> 
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>DEFENSE</th>
+                    <td class="pkm-numeric"><?php echo $this->pkm['metadata']['defense'];?></td>
+                    <td class="pkm-bar-graph">
+                        <div class="progress">
+                            <div class="bar" style="width: <?php echo ($this->pkm['metadata']['defense'] / 2.55) . '%' ;?>"></div> 
+                        </div>
+                    </td>
+                </tr>                
+                <tr>
+                    <th>SP. ATK</th>
+                    <td class="pkm-numeric"><?php echo $this->pkm['metadata']['specialAttack'];?></td>
+                    <td class="pkm-bar-graph">
+                        <div class="progress">
+                            <div class="bar" style="width: <?php echo ($this->pkm['metadata']['specialAttack'] / 2.55) . '%' ;?>"></div> 
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>SP. DEF</th>
+                    <td class="pkm-numeric"><?php echo $this->pkm['metadata']['specialDefence'];?></td>
+                    <td class="pkm-bar-graph">
+                        <div class="progress">
+                            <div class="bar" style="width: <?php echo ($this->pkm['metadata']['specialDefence'] / 2.55) . '%' ;?>"></div> 
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>SPEED</th>
+                    <td class="pkm-numeric"><?php echo $this->pkm['metadata']['speed'];?></td>
+                    <td class="pkm-bar-graph">
+                        <div class="progress">
+                            <div class="bar" style="width: <?php echo ($this->pkm['metadata']['speed'] / 2.55) . '%' ;?>"></div> 
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+                <tbody>
+                    <tr>
+                        <th>TOTAL</th>
+                        <td class="pkm-numeric">
+                            <?php echo $this->pkm['metadata']['hp']
+                                    + $this->pkm['metadata']['defense']
+                                    + $this->pkm['metadata']['attack']
+                                    + $this->pkm['metadata']['specialAttack']
+                                    + $this->pkm['metadata']['specialDefence']
+                                    + $this->pkm['metadata']['speed'];
+                            ?>
+                        </td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
-</div>
-<p>View script for controller <b>Pokedex</b> and script/action name <b>index</b></p>

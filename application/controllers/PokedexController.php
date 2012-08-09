@@ -37,13 +37,24 @@ class PokedexController extends Zend_Controller_Action
     public function pokemonAction()
     {
         // action body
-        $name = $this->_request->getParam('pokemon');
+        echo "<pre>";
+        print_r($this->_request->getParams('pokemon'));
+        echo "</pre>";
+        $param_name = $this->_request->getParam('pokemon');
 
+        var_dump($param_name);
+
+
+        define('POKEDEX_API','http://localhost:8080/pokedex/');
+        define('POKEMON_API', POKEDEX_API . 'pokemon/');
+        define('POKEMON_IMAGE_DIR','/img/sugimori/');
+        //define(POKEMON_MOVES_API, POKEDEX_API . 'moves/');
+
+        $url = POKEMON_API . $param_name;
         // $moves_api = "localhost:8080/pokemon/moves";
         //$request = http_get($moves_api, array('timeout'=>1), $info);
 
         //$this->view->moves = json_decode($request);
-        $url = 'http://localhost:8080/pokedex/moves';
         /*
         $http = new Zend_Rest_Client($url);
         $response = $http->get();
@@ -58,9 +69,42 @@ class PokedexController extends Zend_Controller_Action
         $client = new Zend_Http_Client($url);
 		//$this->view->response = $client->request();
 		$response = $client->request();
-		$moves = Zend_Json::decode($response->getBody());
+		$pkm = Zend_Json::decode($response->getBody());
 
-		var_dump($moves);
+        $this->view->pkm = $pkm;
+        $this->view->POKEMON_IMAGE_DIR = POKEMON_IMAGE_DIR;
+
+        
+
+        //$pkm = new Pokemon($pkm_json);
+
+        //$this->view->pkm = $pkm;
+
+        echo "<h2>name is:</h2>" . $pkm['metadata']['name'];
+
+
+
+        echo "<h2>Metadata</h2> <pre> ";
+        var_dump($pkm['metadata']);
+        echo "</pre>";
+
+        echo "<h2>Full PKM JSON</h2> <pre>";
+        var_dump($pkm);
+        echo "</pre>";
+
+
+        /*
+        $pkm = new Pokemon($json);
+
+        $this->view->pkm = $pkm;
+
+
+
+        $this->pkm->name;
+
+        $this->view->moves = $moves;
+        */
+
 		//die(var_dump($response));
 
 /*

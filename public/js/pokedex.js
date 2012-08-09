@@ -16,5 +16,7 @@ $(document).ready(function(){
 
 */
 $(document).ready(function(){
+
+    // click even to open up move tabs
     $('#moveTab a:eq(0)').click();
 })
