@@ -1,8 +1,22 @@
 <div class="container">
     <ul class="nav nav-pills pkm-number-nav">
-        <li class="pull-left"><a href="#">#24 Arbok</a></li>
-        <li class="span4 offset4 pkm-current"><a href="#"><?php echo ucwords($this->pkm['metadata']['name'])?></a></li>
-        <li class="pull-right"><a href="#">#26 Raichu</a></li>
+        <li class="pull-left">
+        <?php if(!empty($this->previous_pkm)): ?>
+            <a href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'pokemon','pokemon'=> $this->previous_pkm['name'])); ?>">
+                <?php echo '#' . $this->previous_pkm['nationalId'] . ' ' . $this->previous_pkm['name']?>
+            </a>
+        <?php endif;?>
+        </li>
+        <li class="span4 offset4 pkm-current">
+            <a href="#"><?php echo ucwords($this->pkm['metadata']['name'])?></a>
+        </li>
+        <li class="pull-right">
+        <?php if(!empty($this->next_pkm)): ?>
+            <a href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'pokemon','pokemon'=> $this->next_pkm['name'])); ?>">
+                <?php echo '#' . $this->next_pkm['nationalId'] . ' ' . $this->next_pkm['name']?>
+            </a>
+        <?php endif;?>
+        </li>
     </ul>
 </div>
 
@@ -55,6 +69,17 @@
 <div class="page-header pkm-section-header">
     <h2>Evolution</h2>
 </div>
+<!--
+<?php /*if(empty($this->evolution_chain)): */?>
+        <p><?php /*echo $this->pkm['metadata']['name'] . " does not evolve" ; */?></p>
+    <?php /*else: */?>
+        <?/* foreach($this->evolution_chain as $stage) :*/?>
+            <?php /*list($from, $from_name, $to, $to_name) = $stage */?>
+
+
+   <?php //endforeach ?> -->
+
+
 <div class="container evolution">
     <div class="row">
         <div class="span2 thumbnail">
@@ -135,49 +160,67 @@
                         </table>
                     </div>
                     <div class="tab-pane" id="hm-tm-moves">
+
                         <h3>Moves by HM</h3>
-                        <table class="table table-striped table-bordered table-condensed">
-                            <thead>
-                            <tr><th>Level</th><th>Move</th><th>Type</th></tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach($this->pkm['moves']['levelMoves'] as $level_move):?>
-                                    <?php list($mv_level, $mv_name, $mv_type) = $level_move; ?>
-                                <tr>
-                                    <td><?php echo $mv_level;?></td>
-                                    <td><?php echo $mv_name;?></td>
-                                    <td><?php echo $mv_type;?></td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                        <?php if(empty($this->pkm['moves']['hmMoves'])):?>
+                                <p><?php echo ucwords($this->pkm['metadata']['name']) . ' does not have HM moves.';?></p>
+                        <?php else: ?>
+                                <table class="table table-striped table-bordered table-condensed">
+                                    <thead>
+                                    <tr><th>Level</th><th>Move</th><th>Type</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach($this->pkm['moves']['hmMoves'] as $hm_move):?>
+                                    <?php list($hm_mv_level, $hm_mv_name, $hm_mv_type) = $hm_move; ?>
+                                        <tr>
+                                            <td><?php echo $hm_mv_level;?></td>
+                                            <td><?php echo $hm_mv_name;?></td>
+                                            <td><?php echo $hm_mv_type;?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                        <?php endif; ?>
                         <h3>Moves by TM</h3>
-                        <table class="table table-striped table-bordered table-condensed">
-                            <thead>
-                            <tr><th>Level</th><th>Move</th><th>Type</th></tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach($this->pkm['moves']['machineMoves'] as $machine_move):?>
-                                    <?php list($mv_level, $mv_name, $mv_type) = $machine_move; ?>
+                        <?php if(empty($this->pkm['moves']['tmMoves'])):?>
+                                <p><?php echo ucwords($this->pkm['metadata']['name']) . ' does not have TM moves.';?></p>
+                        <?php else: ?>
+                            <table class="table table-striped table-bordered table-condensed">
+                                <thead>
+                                <tr><th>Level</th><th>Move</th><th>Type</th></tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($this->pkm['moves']['tmMoves'] as $tm_move):?>
+                                    <?php list($tm_mv_level, $tm_mv_name, $tm_mv_type) = $tm_move; ?>
                                 <tr>
-                                    <td><?php echo $mv_level;?></td>
-                                    <td><?php echo $mv_name;?></td>
-                                    <td><?php echo $mv_type;?></td>
+                                    <td><?php echo $tm_mv_level;?></td>
+                                    <td><?php echo $tm_mv_name;?></td>
+                                    <td><?php echo $tm_mv_type;?></td>
                                 </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php endif; ?>
                     </div>
                     <div class="tab-pane" id="move-tutor-moves">
-                        <table class="table table-striped table-bordered table-condensed">
-                            <tr><td>Number</td><td></td><td></td></tr>
-                            <tr><td>Type</td><td></td><td></td></tr>
-                            <tr><td>Egg Group</td><td></td><td></td></tr>
-                            <tr><td>Gender</td><td></td><td></td></tr>
-                            <tr><td>Weakness</td><td></td><td></td></tr>
-                            <tr><td>Height</td><td></td><td></td></tr>
-                            <tr><td>Weight</td><td></td><td></td></tr>
-                        </table>
+                        <?php if(empty($this->pkm['moves']['tutor_moves'])):?>
+                            <p><?php echo ucwords($this->pkm['metadata']['name']) . ' does not have tutor moves.';?></p>
+                        <?php else: ?>
+                            <table class="table table-striped table-bordered table-condensed">
+                                <thead>
+                                <tr><th>Move</th><th>Type</th></tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($this->pkm['moves']['tutor_moves'] as $tutor_move):?>
+                                    <?php list($tutor_mv_name, $tutor_mv_type) = $tutor_move; ?>
+                                <tr>
+                                    <td><?php echo $tutor_mv_name;?></td>
+                                    <td><?php echo $tutor_mv_type;?></td>
+                                </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php endif; ?>
                     </div>
 
                 </div>
