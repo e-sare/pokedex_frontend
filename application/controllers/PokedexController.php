@@ -103,29 +103,6 @@ class PokedexController extends Zend_Controller_Action
 
     public function pokemonAction()
     {
-        //$this->view->appendFile('https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')->appendFile('/js/bootstrap.js')->appendFile('/js/bootstrap-tab.js')->appendFile('/js/pokedex.js');
-
-
-        // action body
-        echo "<pre>";
-        print_r($this->_request->getParams('pokemon'));
-        echo "</pre>";
-
-
-        $pkm_name = $this->_request->getParam('pokemon');
-
-
-
-        //define(POKEMON_MOVES_API, POKEDEX_API . 'moves/');
-
-
-
-        $url = POKEMON_BY_NAME . $pkm_name . '/' . DEFAULT_GEN;
-
-
-
-
-
 
         //localhost:8080/pokedex/pokemon/pikachu
 
@@ -147,6 +124,16 @@ class PokedexController extends Zend_Controller_Action
 
 
 
+
+        /*
+         * ========================================
+         * initiate pokemon json
+         * ========================================
+         */
+
+        $pkm_name = $this->_request->getParam('pokemon');
+
+        $url = POKEMON_BY_NAME . $pkm_name . '/' . DEFAULT_GEN;
         $client = new Zend_Http_Client($url);
 		$response = $client->request();
         $pkm = Zend_Json::decode($response->getBody());
@@ -154,9 +141,6 @@ class PokedexController extends Zend_Controller_Action
 
         $previous_pkm = '';
         $next_pkm  = '';
-
-
-        //die(var_dump($url));
 
 
         // Get JSON for previous & next Pokemon for top navigation
@@ -255,18 +239,18 @@ class PokedexController extends Zend_Controller_Action
 
 
 
-        echo "<h2>TYPE DEFENSE JSON</h2> <pre>";
-        var_dump($type_defense);
-
-        echo "</pre>";
-
-
-        echo "<h2>TEST PKM JSON</h2> <pre>";
-        echo count($pkm['metadata']['type']) . "<br >";
-        var_dump($pkm);
-
-        // var_dump($test_next_pkm);
-        echo "</pre>";
+//        echo "<h2>TYPE DEFENSE JSON</h2> <pre>";
+//        var_dump($type_defense);
+//
+//        echo "</pre>";
+//
+//
+//        echo "<h2>TEST PKM JSON</h2> <pre>";
+//        echo count($pkm['metadata']['type']) . "<br >";
+//        var_dump($pkm);
+//
+//        // var_dump($test_next_pkm);
+//        echo "</pre>";
 
 
 

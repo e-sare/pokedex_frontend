@@ -11,11 +11,11 @@ body {
 }
 
 
-table.table-general-info th{
+#table-general-info th{
     width: 100px;
 }
 
-table.table-general-info td{
+#table-general-info td{
     width: 600px;
 }
 
@@ -34,16 +34,12 @@ table.table-width-zero{
     width:0;
 }
 
-table.table-stats {
-
-}
-
-table.table-stats th, table.table-stats td{
+#table-stats th, table.table-stats td{
     width:20px;
     text-align: right;
 }
 
-table.table-stats div.progress{
+#table-stats div.progress{
     width: 100px;
     margin-bottom: 0px;
 }
@@ -105,4 +101,8 @@ div.pkm-move-list{
 
 #nav-search button{
     display: inline;
+}
+
+#social-box{
+    padding-top: 30px;
 }
