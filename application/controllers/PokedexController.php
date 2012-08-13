@@ -1,19 +1,79 @@
 <?php
 
-//require_once ('Zend/Http/Client.php');
-
 class PokedexController extends Zend_Controller_Action
 {
 
     public function init()
     {
+        define('POKEDEX_BASE','http://localhost:8080/pokedex/');
+        define('POKEMON_BY_NAME', POKEDEX_BASE . 'pokemon/');
+        define('POKEMON_BY_RANGE', POKEMON_BY_NAME . 'all/');
+        define('POKEMON_BY_ID', POKEMON_BY_NAME . 'national_id/');
+        define('POKEMON_EVO_CHAIN', POKEDEX_BASE . 'evolutions/pokemon/');
+
+        define('DEFAULT_GEN','generation/5');
+        define('POKEMON_IMAGE_DIR','/img/sugimori/');
+
+
         /* Initialize action controller here */
+        $this->_redirector = $this->_helper->getHelper('Redirector');
     }
 
     public function indexAction()
     {
+        if($this->getRequest()->isPost() && $this->_getParam("name")){
 
-        // action body
+            $query = htmlentities($this->_getParam("name"));
+
+            if(is_numeric($query)){
+
+                $url = POKEMON_BY_ID . $query . '/' . DEFAULT_GEN;
+
+                //die(var_dump($url));
+
+                $client = new Zend_Http_Client($url);
+                $response = $client->request();
+
+                //die(var_dump($response));
+                $pkm = Zend_Json::decode($response->getBody());
+
+                if(empty($pkm)){
+                    $this->_redirector->gotoSimple('ohsnap',
+                    'pokedex',
+                    null,
+                    array());
+                }
+                else{
+                    $this->_redirector->gotoSimple('pokemon',
+                    'pokedex',
+                    null,
+                    array( 'pokemon' => $pkm['metadata']['name'] )
+                    );
+                }
+            }
+            else{
+                $query = explode(' ', $query)[0];
+                $url = POKEMON_BY_NAME . $query;
+                // die(var_dump($url));
+
+                $client = new Zend_Http_Client($url);
+                $response = $client->request();
+
+                //die(var_dump($response));
+                $pkm = Zend_Json::decode($response->getBody());
+
+                if(empty($pkm)){
+                    die('YOU ARE NOT COOL ENOUGH TO CATCH EM ALL' );
+                }
+                else{
+                     $this->_redirector->gotoSimple('pokemon',
+                    'pokedex',
+                    null,
+                    array( 'pokemon' => $pkm['metadata']['name'])
+                    );
+                }
+            }
+        }
     }
 
     public function browseAction()
@@ -34,29 +94,39 @@ class PokedexController extends Zend_Controller_Action
         // action body
     }
 
+    public function ohsnapAction()
+    {
+
+    }
+
     public function pokemonAction()
     {
+        //$this->view->appendFile('https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')->appendFile('/js/bootstrap.js')->appendFile('/js/bootstrap-tab.js')->appendFile('/js/pokedex.js');
+
+
         // action body
         echo "<pre>";
         print_r($this->_request->getParams('pokemon'));
         echo "</pre>";
-        $param_name = $this->_request->getParam('pokemon');
-
-        var_dump($param_name);
 
 
-        define('POKEDEX_API','http://localhost:8080/pokedex/');
-        define('POKEMON_API', POKEDEX_API . 'pokemon/');
-        define('POKEMON_IMAGE_DIR','/img/sugimori/');
+        $pkm_name = $this->_request->getParam('pokemon');
+
+
+
         //define(POKEMON_MOVES_API, POKEDEX_API . 'moves/');
 
-        $url = POKEMON_API . $param_name . '/generation/5';
+
+
+        $url = POKEMON_BY_NAME . $pkm_name . '/' . DEFAULT_GEN;
+
 
 
 
 
 
         //localhost:8080/pokedex/pokemon/pikachu
+
 
         // $moves_api = "localhost:8080/pokemon/moves";
         //$request = http_get($moves_api, array('timeout'=>1), $info);
@@ -73,31 +143,100 @@ class PokedexController extends Zend_Controller_Action
         }
         */
 
+
+
         $client = new Zend_Http_Client($url);
-		//$this->view->response = $client->request();
 		$response = $client->request();
-		$pkm = Zend_Json::decode($response->getBody());
+        $pkm = Zend_Json::decode($response->getBody());
+
+
+        $previous_pkm = '';
+        $next_pkm  = '';
+
+
+        //die(var_dump($url));
+
+
+        // Get JSON for previous & next Pokemon for top navigation
+        if($pkm['metadata']['nationalId'] >= 2 && $pkm ['metadata']['nationalId'] <= 648){
+
+            // get previous & next pokemon if current pkm id is between
+            $url = POKEMON_BY_RANGE . ($pkm['metadata']['nationalId'] - 1) . '/to/' . ($pkm['metadata']['nationalId'] + 1) . '/5';
+
+            $client->setUri($url);
+            $response = $client->request();
+            $before_after_pkm = Zend_Json::decode($response->getBody());
+            $previous_pkm = $before_after_pkm[0]['metadata'];
+            $next_pkm = $before_after_pkm[2]['metadata'];
+        }
+        elseif($pkm['metadata']['nationalId'] == 1){
+
+            echo "<h1> {$pkm['metadata']['nationalId']}</h1>";
+
+            $url = POKEMON_BY_RANGE . ($pkm['metadata']['nationalId']) . '/to/' . ($pkm['metadata']['nationalId'] + 1) . '/5';
+
+            $client->setUri($url);
+            $response = $client->request();
+            $before_after_pkm = Zend_Json::decode($response->getBody());
+            $next_pkm = $before_after_pkm[1]['metadata'];
+        }
+        else{
+            $url = POKEMON_BY_RANGE . ($pkm['metadata']['nationalId'] -1) . '/to/' . ($pkm['metadata']['nationalId']) . '/5';
+
+            $client->setUri($url);
+            $response = $client->request();
+            $before_after_pkm = Zend_Json::decode($response->getBody());
+            $previous_pkm = $before_after_pkm[0]['metadata'];
+        }
+
+
+        /*
+         * ========================================
+         * initiate evolution chain json
+         * ========================================
+         */
+
+        $client->setUri(POKEMON_EVO_CHAIN . $pkm['metadata']['nationalId']);
+        $response = $client->request();
+        $evolution_chain = Zend_Json::decode($response->getBody());
+
+
+
+
+
+
+        /*
+         * ======================================================
+         * start passing it all to the View here
+         * ======================================================
+         */
+
+
+
+
 
         $this->view->pkm = $pkm;
+        $this->view->previous_pkm = $previous_pkm;
+        $this->view->next_pkm = $next_pkm;
+        $this->view->evolution_chain = $evolution_chain;
         $this->view->POKEMON_IMAGE_DIR = POKEMON_IMAGE_DIR;
 
-        
-
-        //$pkm = new Pokemon($pkm_json);
-
-        //$this->view->pkm = $pkm;
-
-        echo "<h2>name is:</h2>" . $pkm['metadata']['name'];
 
 
 
-        echo "<h2>Metadata</h2> <pre> ";
-        var_dump($pkm['metadata']);
+
+        echo "<h2>EVOLUTION CHAIN JSON</h2> <pre>";
+        var_dump($evolution_chain);
+
         echo "</pre>";
 
-        echo "<h2>Full PKM JSON</h2> <pre>";
-        var_dump($pkm);
+
+        echo "<h2>TEST PKM JSON</h2> <pre>";
+        var_dump($evolution_chain);
+
+        // var_dump($test_next_pkm);
         echo "</pre>";
+
 
 
         /*
@@ -106,7 +245,7 @@ class PokedexController extends Zend_Controller_Action
         $this->view->pkm = $pkm;
 
 
-
+k
         $this->pkm->name;
 
         $this->view->moves = $moves;

@@ -11,14 +11,15 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'index')); ?>">IGN Pokedex</a>
+                <a class="brand" href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'index'),null, true); ?>">IGN Pokedex</a>
                 <ul class="nav">
-                    <li><a href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'browse')); ?>">Browse</a></li>
-                    <li><a href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'comparison')); ?>">Comparison</a></li>
-                    <li><a href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'maps')); ?>">Maps</a></li>
+                    <li><a href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'browse'), null, true); ?>">Browse</a></li>
+                    <li><a href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'comparison'), null, true); ?>">Comparison</a></li>
+                    <li><a href="<?php echo $this->url(array('controller'=>'pokedex','action'=>'maps'), null, true); ?>">Maps</a></li>
                 </ul>
-                <form class="navbar-search pull-right" action>
-                    <input type="text" class="search-query span2" placeholder="Search by name or ID">
+                <form class="navbar-search pull-right" id="nav-search" method="post" action="http://localhost:8888/pokedex/index">
+                    <input type="text" class="search-query"  name="name" placeholder="Search by name or ID">
+                    <button type="submit" class="btn">Search</button>
                 </form>
             </div>
         </div>

@@ -19,4 +19,19 @@ $(document).ready(function(){
 
     // click even to open up move tabs
     $('#moveTab a:eq(0)').click();
+
+    $('#nav-search button').hide();
+
+    console.log(window.location.pathname);
+
+    var hideNavSearch = function(){
+        $('#nav-search').hide();
+    }
+
+
+    if(window.location.pathname == '/pokedex' || window.location.pathname == '/pokedex/index'){
+        hideNavSearch();
+    }else{
+        $('#nav-search').show();
+    }
 })
