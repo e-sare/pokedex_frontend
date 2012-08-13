@@ -11,6 +11,8 @@ class PokedexController extends Zend_Controller_Action
         define('POKEMON_BY_ID', POKEMON_BY_NAME . 'national_id/');
         define('POKEMON_EVO_CHAIN', POKEDEX_BASE . 'evolutions/pokemon/');
 
+        define('POKEMON_TYPE_EFFICACY', POKEDEX_BASE . 'types/efficacy/type1/');
+
         define('DEFAULT_GEN','generation/5');
         define('POKEMON_IMAGE_DIR','/img/sugimori/');
 
@@ -181,7 +183,7 @@ class PokedexController extends Zend_Controller_Action
             $next_pkm = $before_after_pkm[1]['metadata'];
         }
         else{
-            $url = POKEMON_BY_RANGE . ($pkm['metadata']['nationalId'] -1) . '/to/' . ($pkm['metadata']['nationalId']) . '/5';
+            $url = POKEMON_BY_RANGE . ($pkm['metadata']['nationalId'] - 1) . '/to/' . ($pkm['metadata']['nationalId']) . '/5';
 
             $client->setUri($url);
             $response = $client->request();
@@ -196,10 +198,37 @@ class PokedexController extends Zend_Controller_Action
          * ========================================
          */
 
-        $client->setUri(POKEMON_EVO_CHAIN . $pkm['metadata']['nationalId']);
+        $url = POKEMON_EVO_CHAIN . $pkm['metadata']['nationalId'];
+
+        $client->setUri($url);
         $response = $client->request();
         $evolution_chain = Zend_Json::decode($response->getBody());
 
+
+        /*
+         * ========================================
+         * initiate type defense json
+         * ========================================
+         */
+
+        if(count($pkm['metadata']['name']) == 1){
+
+            $url = POKEMON_TYPE_EFFICACY. strtolower($pkm['metadata']['type']['type_1']) ;
+
+            $client->setUri($url);
+            $response = $client->request();
+            $type_defense = Zend_Json::decode($response->getBody());
+
+
+        }else{
+
+            $url = POKEMON_TYPE_EFFICACY. strtolower($pkm['metadata']['type']['type_1']) . '/type2/' . strtolower($pkm['metadata']['type']['type_2']);
+
+            $client->setUri($url);
+            //die($url);
+            $response = $client->request();
+            $type_defense = Zend_Json::decode($response->getBody());
+        }
 
 
 
@@ -219,20 +248,22 @@ class PokedexController extends Zend_Controller_Action
         $this->view->previous_pkm = $previous_pkm;
         $this->view->next_pkm = $next_pkm;
         $this->view->evolution_chain = $evolution_chain;
+        $this->view->type_defense = $type_defense;
         $this->view->POKEMON_IMAGE_DIR = POKEMON_IMAGE_DIR;
 
 
 
 
 
-        echo "<h2>EVOLUTION CHAIN JSON</h2> <pre>";
-        var_dump($evolution_chain);
+        echo "<h2>TYPE DEFENSE JSON</h2> <pre>";
+        var_dump($type_defense);
 
         echo "</pre>";
 
 
         echo "<h2>TEST PKM JSON</h2> <pre>";
-        var_dump($evolution_chain);
+        echo count($pkm['metadata']['type']) . "<br >";
+        var_dump($pkm);
 
         // var_dump($test_next_pkm);
         echo "</pre>";

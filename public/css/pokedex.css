@@ -19,20 +19,19 @@ table.table-general-info td{
     width: 600px;
 }
 
-table.table-type-defense{
+#table-type-defense{
     font-size:9px;
 }
 
-table.table-location{
+#table-location{
     font-size:10px;
 }
 
+#table-location th{
+    width:40px;
+}
 table.table-width-zero{
     width:0;
-}
-
-table.table-location th{
-    width:40px;
 }
 
 table.table-stats {
