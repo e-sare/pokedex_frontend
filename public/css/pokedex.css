@@ -103,3 +103,7 @@ div.pkm-move-list{
     height:300px;
     overflow: scroll;
 }
+
+#nav-search button{
+    display: inline;
+}

@@ -1,4 +1,5 @@
 *.DS_Store
+.idea/
 INSTALL.txt
 LICENSE.txt
 README.txt

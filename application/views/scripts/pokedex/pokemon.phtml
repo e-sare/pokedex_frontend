@@ -44,7 +44,7 @@
                         echo $value . " "; } ?>
                     </td>
                 </tr>
-                <tr><th>Egg Group</th><td>???</td></tr>
+                <tr><th>Egg Group</th><td>&#8722;&#8722;&#8722;</td></tr>
                 <tr><th>Gender</th>
                     <td>
                         <?php if(is_numeric($this->pkm['metadata']['femaleGenderPercent'])): ?>
@@ -55,7 +55,7 @@
                         <?php endif;?>
                     </td>
                 </tr>
-                <tr><th>Weakness</th><td>???</td></tr>
+                <tr><th>Weakness</th><td>&#8722;&#8722;&#8722;</td></tr>
                 <tr><th>Height</th>
                     <td><?php echo $this->pkm['metadata']['height'];?></td>
                 </tr>
@@ -69,20 +69,172 @@
 <div class="page-header pkm-section-header">
     <h2>Evolution</h2>
 </div>
-<!--
-<?php /*if(empty($this->evolution_chain)): */?>
-        <p><?php /*echo $this->pkm['metadata']['name'] . " does not evolve" ; */?></p>
-    <?php /*else: */?>
-        <?/* foreach($this->evolution_chain as $stage) :*/?>
-            <?php /*list($from, $from_name, $to, $to_name) = $stage */?>
 
-
-   <?php //endforeach ?> -->
 
 
 <div class="container evolution">
-    <div class="row">
+    <div class="row span11">
+        <table class="table table-striped table-bordered table-condensed table-width-zero" >
+            <tbody>
+           <?php if(empty($this->evolution_chain)): ?>
+                <p><?php echo $this->pkm['metadata']['name'] . " does not evolve" ; ?></p>
+
+           <?php else: $this->current_evo_id = ""; ?>
+                <tr>
+                    <?php foreach($this->evolution_chain as $stage):?>
+                        <?php //list($from, $from_name, $to, $to_name, $how) = $stage ;?>
+                            <?php if($stage['to'] != $this->current_evo_id): ?>
+                                <td>
+                                    <?php echo $stage['from'] . '<br>' .  '&rarr;'. '<br>' . $stage['how'] . '<br>' . $stage['to']; ?>
+                                    <?php $this->current_evo_id = $stage['to']; ?>
+                                </td>
+<!--                                <td> &rarr; <br> --><?php //echo $stage['how'] ; ?><!--</td>-->
+                            <?php endif; ?>
+                    <?php endforeach; ?>
+            <?php endif; ?>
+                </tr>
+            </tbody>
+        </table>
+        <!--        <div class="span2 thumbnail">
+        <a href="#"><img src="http://placehold.it/260x180" alt="name of pokemon"></a>
+        <div class="caption">
+            <a href="#" class="pkm-name">Pichu</a>
+            <br>
+            #172
+            <br>
+            <a href="#" class="pkm-type">Electric</a>
+        </div>
+    </div>
+    <div class="span2 arrow">
+        <em>&rarr;</em>
+            <br>
+            <span class="pkm-evo-how">by Happiness</span>
+        </div>
         <div class="span2 thumbnail">
+            <a href="#"><img src="http://placehold.it/260x180" alt="name of pokemon"></a>
+            <div class="caption">
+                <br>
+                <a href="#" class="pkm-name">Pikachu</a>
+                <br>
+                #25
+                <br>
+                <a href="#" class="pkm-type">Electric</a>
+            </div>
+        </div>
+        <div class="span2">
+            <em>&rarr;</em>
+            <br>
+            <span class="pkm-evo-how">use Thunderstone</span>
+        </div>
+        <div class="span2 thumbnail">
+            <a href="#"><img src="http://placehold.it/260x180" alt="name of pokemon"></a>
+            <div class="caption">
+                <br>
+                <a href="#" class="pkm-name">Raichu</a>
+                <br>
+                #26
+                <br>
+                <a href="#" class="pkm-type">Electric</a>
+            </div>
+        </div>-->
+    </div>
+</div>
+
+<!--<div class="container evolution">-->
+<!--    <div class="row span11">-->
+<!--        <table class="table table-striped table-bordered table-condensed table-width-zero" >-->
+<!--            <tbody>-->
+<!--            <tr>-->
+<!--                <td>-->
+<!--                    <a href="#"><img src="http://placehold.it/260x180" alt="name of pokemon"></a>-->
+<!--                    <br>-->
+<!--                    #172-->
+<!--                    <br>-->
+<!--                    <a href="#" class="pkm-type">Electric</a>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <em>&rarr;</em>-->
+<!--                    <br>-->
+<!--                    <span class="pkm-evo-how">by Happiness</span>-->
+<!--                    </td>-->
+<!--                <td>-->
+<!--                    <a href="#"><img src="http://placehold.it/260x180" alt="name of pokemon"></a>-->
+<!--                    <br>-->
+<!--                    #172-->
+<!--                    <br>-->
+<!--                    <a href="#" class="pkm-type">Electric</a>-->
+<!--                <td>-->
+<!--                    <em>&rarr;</em>-->
+<!--                    <br>-->
+<!--                    <span class="pkm-evo-how">by Happiness</span>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <a href="#"><img src="http://placehold.it/260x180" alt="name of pokemon"></a>-->
+<!--                    <br>-->
+<!--                    #172-->
+<!--                    <br>-->
+<!--                    <a href="#" class="pkm-type">Electric</a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--        <!--        <div class="span2 thumbnail">-->
+<!--        <a href="#"><img src="http://placehold.it/260x180" alt="name of pokemon"></a>-->
+<!--        <div class="caption">-->
+<!--            <a href="#" class="pkm-name">Pichu</a>-->
+<!--            <br>-->
+<!--            #172-->
+<!--            <br>-->
+<!--            <a href="#" class="pkm-type">Electric</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="span2 arrow">-->
+<!--        <em>&rarr;</em>-->
+<!--            <br>-->
+<!--            <span class="pkm-evo-how">by Happiness</span>-->
+<!--        </div>-->
+<!--        <div class="span2 thumbnail">-->
+<!--            <a href="#"><img src="http://placehold.it/260x180" alt="name of pokemon"></a>-->
+<!--            <div class="caption">-->
+<!--                <br>-->
+<!--                <a href="#" class="pkm-name">Pikachu</a>-->
+<!--                <br>-->
+<!--                #25-->
+<!--                <br>-->
+<!--                <a href="#" class="pkm-type">Electric</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="span2">-->
+<!--            <em>&rarr;</em>-->
+<!--            <br>-->
+<!--            <span class="pkm-evo-how">use Thunderstone</span>-->
+<!--        </div>-->
+<!--        <div class="span2 thumbnail">-->
+<!--            <a href="#"><img src="http://placehold.it/260x180" alt="name of pokemon"></a>-->
+<!--            <div class="caption">-->
+<!--                <br>-->
+<!--                <a href="#" class="pkm-name">Raichu</a>-->
+<!--                <br>-->
+<!--                #26-->
+<!--                <br>-->
+<!--                <a href="#" class="pkm-type">Electric</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+
+
+
+
+<!--<div class="container evolution">-->
+<!--    <div class="row">-->
+<!--        <table class="table table-striped table-bordered table-condensed table-width-zero" >-->
+<!---->
+<!---->
+<!--        </table>-->
+<!--        <div class="span2 thumbnail">
             <a href="#"><img src="http://placehold.it/260x180" alt="name of pokemon"></a>
             <div class="caption">
                 <a href="#" class="pkm-name">Pichu</a>
@@ -123,9 +275,7 @@
                 <br>
                 <a href="#" class="pkm-type">Electric</a>
             </div>
-        </div>
-    </div>
-</div>
+        </div>-->
 
 <div class="page-header pkm-section-header">
     <h2>Moves</h2>
