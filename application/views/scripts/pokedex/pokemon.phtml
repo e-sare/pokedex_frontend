@@ -81,17 +81,44 @@
 
            <?php else: $this->current_evo_id = ""; ?>
                 <tr>
-                    <?php foreach($this->evolution_chain as $stage):?>
-                        <?php //list($from, $from_name, $to, $to_name, $how) = $stage ;?>
-                            <?php if($stage['to'] != $this->current_evo_id): ?>
-                                <td>
-                                    <?php echo $stage['from'] . '<br>' .  '&rarr;'. '<br>' . $stage['how'] . '<br>' . $stage['to']; ?>
-                                    <?php $this->current_evo_id = $stage['to']; ?>
-                                </td>
-<!--                                <td> &rarr; <br> --><?php //echo $stage['how'] ; ?><!--</td>-->
-                            <?php endif; ?>
-                    <?php endforeach; ?>
-            <?php endif; ?>
+                    <?php // test if evolutionChain key exists to check for 1 stage of evolution ?>
+                    <?php if (key_exists('evolutionChain', $this->evolution_chain)): ?>
+                        <td>
+                            <?php echo $this->evolution_chain['fromName']; ?>
+                            <br>
+                            <?php echo $this->evolution_chain['from']; ?>
+                            <br>
+                            &rarr;
+                            <?php echo $this->evolution_chain['how']; ?>
+                            <br>
+                            <?php echo $this->evolution_chain['toName']; ?>
+                            <br>
+                            <?php echo $this->evolution_chain['to']; ?>
+                        </td>
+                    <?php else: ?>
+                        <?php foreach($this->evolution_chain as $stage):?>
+                            <?php //list($from, $from_name, $to, $to_name, $how) = $stage ;?>
+<!--                                --><?php //if($stage['to'] != $this->current_evo_id): ?>
+                                    <td>
+                                        <?php echo $stage['fromName']; ?>
+                                        <br>
+                                        <?php echo $stage['from']; ?>
+                                        <br>
+                                        &rarr;
+                                        <?php echo $stage['how']; ?>
+                                        <br>
+                                        <?php echo $stage['toName']; ?>
+                                        <br>
+                                        <?php echo $stage['to']; ?>
+
+<!--                                        --><?php //echo $stage['from'] . '<br>' .  '&rarr;'. '<br>' . $stage['how'] . '<br>' . $stage['to']; ?>
+<!--                                        --><?php //$this->current_evo_id = $stage['to']; ?>
+                                    </td>
+    <!--                                <td> &rarr; <br> --><?php //echo $stage['how'] ; ?><!--</td>-->
+<!--                                --><?php //endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                <?php endif; ?>
                 </tr>
             </tbody>
         </table>
