@@ -7,52 +7,32 @@ class PokedexController extends Zend_Controller_Action {
     define('POKEMON_BY_NAME', POKEDEX_BASE . 'pokemon/slug/');
     define('POKEMON_BY_ID', POKEDEX_BASE . 'pokemon/national-id/');
     define('POKEMON_EVO_CHAIN', POKEDEX_BASE . 'evolutions/pokemon/national-id/');
-
     define('POKEMON_TYPE_EFFICACY', POKEDEX_BASE . 'types/efficacy/type1/');
-
     define('DEFAULT_GEN', 'generation/5');
     define('POKEMON_IMAGE_DIR', '/img/sugimori/');
-
-
-    /* Initialize action controller here */
     $this->_redirector = $this->_helper->getHelper('Redirector');
   }
 
   public function indexAction() {
     if ($this->getRequest()->isPost() && $this->_getParam("name")) {
-
       $query = htmlentities($this->_getParam("name"));
-
       if (is_numeric($query)) {
-
-        $url = POKEMON_BY_ID . $query . '/' . DEFAULT_GEN;
-
-        //die(var_dump($url));
-
+        $url = POKEMON_BY_ID . $query;
         $client = new Zend_Http_Client($url);
         $response = $client->request();
-
-        //die(var_dump($response));
         $pkm = Zend_Json::decode($response->getBody());
-
-        if (empty($pkm)) {
+        if (array_key_exists('IGNPokedexError', $pkm)) {
           $this->_redirector->gotoSimple('ohsnap', 'pokedex', null, array());
         } else {
-          $this->_redirector->gotoSimple('pokemon', 'pokedex', null, array('pokemon' => $pkm['metadata']['name'])
+          $this->_redirector->gotoSimple('pokemon', 'pokedex', null, array('pokemon' => $pkm['slug'])
           );
         }
       } else {
-        $query = explode(' ', $query)[0];
         $url = POKEMON_BY_NAME . $query;
-        // die(var_dump($url));
-
         $client = new Zend_Http_Client($url);
         $response = $client->request();
-
-        //die(var_dump($response));
         $pkm = Zend_Json::decode($response->getBody());
-
-        if (empty($pkm)) {
+        if (array_key_exists('IGNPokedexError', $pkm)) {
           die('YOU ARE NOT COOL ENOUGH TO CATCH EM ALL');
         } else {
           $this->_redirector->gotoSimple('pokemon', 'pokedex', null, array('pokemon' => $pkm['metadata']['name'])
@@ -63,28 +43,21 @@ class PokedexController extends Zend_Controller_Action {
   }
 
   public function browseAction() {
-
-    // action body
   }
 
   public function comparisonAction() {
-
-    // action body
   }
 
   public function mapsAction() {
-
-    // action body
   }
 
   public function ohsnapAction() {
-    
   }
 
   public function pokemonAction() {
 
     $pkmName = $this->_request->getParam('pokemon');
-    $url = POKEMON_BY_NAME . $pkmName . '/' . DEFAULT_GEN;
+    $url = POKEMON_BY_NAME . $pkmName;
     $client = new Zend_Http_Client($url);
     $pokemonJSON = $client->request();
     $pkm = Zend_Json::decode($pokemonJSON->getBody());
@@ -94,12 +67,19 @@ class PokedexController extends Zend_Controller_Action {
     $prevClient = new Zend_Http_Client($prevPkmUrl);
     $prevPkmJSON = $prevClient->request();
     $prevPkm = Zend_Json::decode($prevPkmJSON->getBody());
+    if (array_key_exists('IGNPokedexError', $prevPkm)) {
+      $prevPkm = null;
+    }
 
     $nextPkmNationalId = ($pkm['metadata']['nationalId']) + 1;
     $nextPkmUrl = POKEMON_BY_ID . $nextPkmNationalId;
     $nextClient = new Zend_Http_Client($nextPkmUrl);
     $nextPkmJSON = $nextClient->request();
     $nextPkm = Zend_Json::decode($nextPkmJSON->getBody());
+    if (array_key_exists('IGNPokedexError', $nextPkm)) {
+      $nextPkm = null;
+    }
+    
 
     if (count($pkm['metadata']['type']) == 1) {
       $url = POKEMON_TYPE_EFFICACY . strtolower($pkm['metadata']['type']['type_1']);
@@ -181,4 +161,3 @@ class PokedexController extends Zend_Controller_Action {
   }
 
 }
-

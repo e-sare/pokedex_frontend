@@ -71,16 +71,6 @@
       </table>
     </div>
   </div>
-  <div class="row">
-    <div class="span3">
-      <div id="social-box" class="span3">
-        <div class="btn-group">
-          <a href="#" class="btn btn-mini">Thumbs Up</a>
-          <a href="#" class="btn btn-mini">Thumbs Down</a>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 <div class="page-header pkm-section-header">
   <h2>Evolution</h2>
@@ -96,29 +86,42 @@
           <?php if (!empty($this->evoBasic)): ?>
             <td>
               <h3>Basic</h3>
-              <img src='/img/main-sprites/black-white/<?php echo $this->evoBasic[0][1]; ?>.png'>
+              <a href="<?php echo $this->url(array('controller' => 'pokedex', 'action' => 'pokemon', 'pokemon' => $this->evoBasic[0][0])); ?>">
+                <img src='/img/main-sprites/black-white/<?php echo $this->evoBasic[0][1]; ?>.png'>
+              </a>
               <p><?php echo ucwords($this->evoBasic[0][0]); ?></p>
             </td>
           <?php endif; ?>
           <?php if (!empty($this->evoSt1)): ?>
-            <?php foreach ($this->evoSt1 as $p): ?>
-              <td>
-                <h3>Stage 1</h3>
-                <img src='/img/main-sprites/black-white/<?php echo $p[1]; ?>.png'>
-                <p><?php echo ucwords($p[0]); ?></p>
-                <p><?php echo $p[2]; ?></p>
-              </td>
-            <?php endforeach ?>
+            <td>
+              <h3>Stage 1</h3>
+              <ul class="unstyled">
+                <?php foreach ($this->evoSt1 as $p): ?>
+                  <li>
+                    <a href="<?php echo $this->url(array('controller' => 'pokedex', 'action' => 'pokemon', 'pokemon' => $p[0])); ?>">
+                      <img src='/img/main-sprites/black-white/<?php echo $p[1]; ?>.png'>
+                    </a>
+                    <p><?php echo ucwords($p[0]); ?></p>
+                    <p><?php echo $p[2]; ?></p>
+                  </li>
+                <?php endforeach ?>
+              </ul>
+            </td>
           <?php endif; ?>
           <?php if (!empty($this->evoSt2)): ?>
-            <?php foreach ($this->evoSt2 as $p): ?>
-              <td>
-                <h3>Stage 2</h3>
-                <img src='/img/main-sprites/black-white/<?php echo $p[1]; ?>.png'>
-                <p><?php echo ucwords($p[0]); ?></p>
-                <p><?php echo $p[2]; ?></p>
-              </td>
-            <?php endforeach ?>
+            <td>
+              <h3>Stage 2</h3>
+              <ul class="unstyled">
+                <?php foreach ($this->evoSt2 as $p): ?>
+                  <li>
+                    <a href="<?php echo $this->url(array('controller' => 'pokedex', 'action' => 'pokemon', 'pokemon' => $p[0])); ?>">
+                      <img src='/img/main-sprites/black-white/<?php echo $p[1]; ?>.png'>
+                    </a>
+                    <p><?php echo ucwords($p[0]); ?></p>
+                    <p><?php echo $p[2]; ?></p></li>
+                <?php endforeach ?>
+              </ul>
+            </td>
           <?php endif; ?>
         <?php endif; ?>
       </tr>
