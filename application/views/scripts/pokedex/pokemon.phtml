@@ -19,7 +19,6 @@
     </li>
   </ul>
 </div>
-
 <div class="container pkm-form">
   <div class="row">
     <div class="span3 pkm-profile-pic thumbnail"><img src='<?php echo POKEMON_IMAGE_DIR . $this->pkm["metadata"]["nationalId"] . '.png'; ?>' alt="pkm-profile-pic"></div>
@@ -29,9 +28,16 @@
         <tr><th>Type</th>
           <td> <?php
       foreach ($this->pkm['metadata']['type'] as $key => $value) {
-        echo $value . " ";
+        echo "<img src=\"/img/types/en/$value.png\">";
       }
       ?>
+          </td>
+        </tr>
+        <tr><th>Abilities</th>
+          <td>
+            <?php if(isset($this->pkm['metadata']['abilities'])): ?>
+              <?php echo implode(", ",$this->pkm['metadata']['abilities']);?>
+            <?php endif; ?>
           </td>
         </tr>
         <tr><th>Egg Group</th>
@@ -55,18 +61,21 @@
         </tr>
         <tr><th>Weakness</th>
           <td>
-            <?php foreach ($this->type_defense as $key => $value) : ?>
-              <?php if ($value > 100): ?>
-                <?php echo $key . ' '; ?>
+            <p>
+              <?php if (!empty($this->typeDouble)): ?>
+                <?php echo implode(', ', $this->typeDouble); ?>
               <?php endif; ?>
-            <?php endforeach; ?>
+              <?php if (!empty($this->typeFour)): ?>
+                <strong><?php echo implode(', ', $this->typeFour); ?></strong>
+              <?php endif; ?>
+            </p>
           </td>
         </tr>
         <tr><th>Height</th>
-          <td><?php echo $this->pkm['metadata']['height']; ?></td>
+          <td><?php echo $this->pkm['metadata']['height']." "; ?>m</td>
         </tr>
         <tr><th>Weight</th>
-          <td><?php echo $this->pkm['metadata']['weight']; ?></td>
+          <td><?php echo $this->pkm['metadata']['weight']." "; ?>kg</td>
         </tr>
       </table>
     </div>
@@ -153,7 +162,7 @@
                   <tr>
                     <td><?php echo $mv_level; ?></td>
                     <td><?php echo $mv_name; ?></td>
-                    <td><?php echo $mv_type; ?></td>
+                    <td><?php echo "<img src=\"/img/types/en/$mv_type.png\">"; ?></td>
                   </tr>
                 <?php endforeach; ?>
 
@@ -177,7 +186,7 @@
                     <tr>
                       <td><?php echo $hm_mv_level; ?></td>
                       <td><?php echo $hm_mv_name; ?></td>
-                      <td><?php echo $hm_mv_type; ?></td>
+                      <td><?php echo "<img src=\"/img/types/en/$hm_mv_type.png\">"; ?></td>
                     </tr>
                   <?php endforeach; ?>
                 </tbody>
@@ -197,7 +206,7 @@
                     <tr>
                       <td><?php echo $tm_mv_level; ?></td>
                       <td><?php echo $tm_mv_name; ?></td>
-                      <td><?php echo $tm_mv_type; ?></td>
+                      <td><?php echo "<img src=\"/img/types/en/$tm_mv_type.png\">"; ?></td>
                     </tr>
                   <?php endforeach; ?>
                 </tbody>
@@ -217,7 +226,7 @@
                     <?php list($tutor_mv_name, $tutor_mv_type) = $tutor_move; ?>
                     <tr>
                       <td><?php echo $tutor_mv_name; ?></td>
-                      <td><?php echo $tutor_mv_type; ?></td>
+                      <td><?php echo "<img src=\"/img/types/en/$tutor_mv_type.png\">"; ?></td>
                     </tr>
                   <?php endforeach; ?>
                 </tbody>

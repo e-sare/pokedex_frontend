@@ -130,7 +130,6 @@ class PokedexController extends Zend_Controller_Action {
 
     // group type efficacy by damage ratio
     foreach ($typeDefense as $type => $value) {
-      $type = ucwords($type);
       if ($value == 25) {
         $typeFourth[] = $type;
       } elseif ($value == 50) {
@@ -151,7 +150,6 @@ class PokedexController extends Zend_Controller_Action {
     $this->view->prevPkm = $prevPkm;
     $this->view->next_pkm = $nextPkm;
     $this->view->evolution_chain = $eChain;
-    $this->view->type_defense = $typeDefense;
     $this->view->POKEMON_IMAGE_DIR = POKEMON_IMAGE_DIR;
     $this->view->typeFourth = $typeFourth;
     $this->view->typeHalf = $typeHalf;
